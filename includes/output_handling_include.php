@@ -75,8 +75,15 @@ function add_handler($name){
 	}
 }
 
+function add_permalink_handler($name){
+	global $fusion_output_handlers;
+	if(!empty($name)){
+		$fusion_output_handlers .= "\$permalink->AddHandler(\"$name\");";
+	}
+}
+
 function handle_output($output){
-	global $fusion_page_head_tags ,$fusion_page_footer_tags, $fusion_page_title, $fusion_page_meta, $fusion_page_replacements, $fusion_output_handlers, $settings;
+	global $permalink, $fusion_page_head_tags ,$fusion_page_footer_tags, $fusion_page_title, $fusion_page_meta, $fusion_page_replacements, $fusion_output_handlers, $settings;
 
 	if(!empty($fusion_page_footer_tags)){
 		$output = preg_replace("#</body>#", $fusion_page_footer_tags."</body>", $output, 1);
