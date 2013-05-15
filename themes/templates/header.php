@@ -17,6 +17,9 @@
 +--------------------------------------------------------*/
 if (!defined("IN_FUSION")) { die("Access Denied"); }
 
+require_once CLASSES."PermalinksDisplay.class.php";
+// Object should be created before including output_handling_class because we are using this object in output handling
+$permalink = new PermalinksDisplay();
 require_once INCLUDES."output_handling_include.php";
 require_once INCLUDES."header_includes.php";
 require_once THEME."theme.php";
