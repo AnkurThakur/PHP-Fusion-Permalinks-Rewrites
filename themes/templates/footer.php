@@ -101,7 +101,16 @@ $output = ob_get_contents();
 if (ob_get_length() !== FALSE){
 	ob_end_clean();
 }
-echo handle_output($output);
+$output = handle_output($output);
+
+if (!defined("ADMIN_PANEL")) {
+	$output = $permalink->getOutput($output);
+}
+
+if (isset($permalink)) {
+	unset($permalink);
+}
+echo $output;
 
 if (ob_get_length() !== FALSE){
 	ob_end_flush();
