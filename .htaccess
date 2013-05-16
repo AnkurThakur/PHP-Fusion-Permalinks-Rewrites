@@ -1,0 +1,15 @@
+# Rewrite Engine ON/OFF
+RewriteEngine on
+
+#  Rewrite-Base
+#  If you are running this script in your root-folder:
+#  RewriteBase /
+#  If you are NOT running this script in your root-folder, but in a sub folder:
+#  RewriteBase /your_folder/
+RewriteBase /
+
+# Rewrite Rules
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/(administration|config|rewrite.php)
+RewriteRule ^(.*?)$ rewrite.php [L]
