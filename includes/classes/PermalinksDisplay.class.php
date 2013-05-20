@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | PHP-Fusion Content Management System
-| Copyright (C) 2002 - 2013 Nick Jones
+| Copyright (C) 2002 - 2011 Nick Jones
 | http://www.php-fusion.co.uk/
 +--------------------------------------------------------+
 | Filename: PermalinksDisplay.class.php
@@ -193,6 +193,8 @@ class PermalinksDisplay
 		$this->replaceAlias();
 		// Replace the other URL Patterns
 		$this->replacePatterns();
+		// Prepend all the File/Images/CSS/JS etc Links with ROOT path
+		$this->appendRootAll();
 		// Check if the URI is a PHP File. So we need a 301 Redirect to the Permalink.
 		$this->validateURI();
 		// For Developer, to see what is happening behind
@@ -1111,13 +1113,27 @@ class PermalinksDisplay
 	* passed to the function.
 	*
 	* @param string $str The String
-	* @param string $type Type or Handler name
 	* @access private
 	*/
 	private function appendDirPath($str)
 	{
-		$str = ROOT.$str;
+		//$str = ROOT.$str;
 		return $str;
+	}
+
+	/*
+	* Append the ROOT Dir Path to all relative links, which are from website
+	*
+	* This function will append the root directory path for all links, which
+	* are in website. (Not External HTTP links)
+	*
+	* @access private
+	*/
+	private function appendRootAll()
+	{
+		if (preg_match("/(href|src)='((?!(htt|ft)p(s)?:\/\/)[^\']*)'/si", $this->output)) {
+			$this->output = preg_replace("/(href|src)='((?!(htt|ft)p(s)?:\/\/)[^\']*)'/si", "$1='".ROOT."$2'", $this->output);
+		}
 	}
 
 	/*
