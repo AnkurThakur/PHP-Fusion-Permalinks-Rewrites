@@ -62,6 +62,21 @@ if (dbrows($result)) {
 	die("Settings do not exist, please check your config.php file or run setup.php again.");
 }
 
+// Define Path to ROOT
+$path = "";
+if (isset($settings['site_path']) && strcmp($settings['site_path'],"/") != 0) {
+	$path = str_replace($settings['site_path'], "", $_SERVER['REQUEST_URI']);
+}
+else {
+	$path = ltrim($_SERVER['REQUEST_URI'],"/");
+}
+$count = substr_count($path, "/");
+$root = "";
+for($i=0; $i<$count; $i++) {
+	$root .= "../";
+}
+define("ROOT", $root);
+
 // Settings dependent functions
 date_default_timezone_set($settings['default_timezone']);
 //ob_start("ob_gzhandler"); //Uncomment this line and comment the one below to enable output compression.
@@ -75,10 +90,13 @@ $PHP_SELF = cleanurl($_SERVER['PHP_SELF']);
 
 // Common definitions
 define("FUSION_REQUEST", isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] != "" ? $_SERVER['REQUEST_URI'] : $_SERVER['SCRIPT_NAME']);
-define("FUSION_QUERY", isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "");
-define("FUSION_SELF", basename($_SERVER['PHP_SELF']));
 define("FUSION_IP", $_SERVER['REMOTE_ADDR']);
 define("QUOTES_GPC", (ini_get('magic_quotes_gpc') ? TRUE : FALSE));
+// These Vars should be defined when we are not in Permalinks
+if (!defined("IN_PERMALINK")) {
+	define("FUSION_QUERY", isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : "");
+	define("FUSION_SELF", basename($_SERVER['PHP_SELF']));
+}
 
 // Path definitions
 define("ADMIN", BASEDIR."administration/");
@@ -119,8 +137,11 @@ while ($base_url_count != 0) {
 	$base_url_count--;
 }
 
-define("TRUE_PHP_SELF", $current_page);
-define("START_PAGE", substr(preg_replace("#(&amp;|\?)(s_action=edit&amp;shout_id=)([0-9]+)#s", "", TRUE_PHP_SELF.(FUSION_QUERY ? "?".FUSION_QUERY : "")), 1));
+// These Vars should be defined when we are not in Permalinks
+if (!defined("IN_PERMALINK")) {
+	define("TRUE_PHP_SELF", $current_page);
+	define("START_PAGE", substr(preg_replace("#(&amp;|\?)(s_action=edit&amp;shout_id=)([0-9]+)#s", "", TRUE_PHP_SELF.(FUSION_QUERY ? "?".FUSION_QUERY : "")), 1));
+}
 
 // IP address functions
 include BASEDIR."includes/ip_handling_include.php";
