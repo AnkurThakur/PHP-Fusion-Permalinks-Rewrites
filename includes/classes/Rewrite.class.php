@@ -1,7 +1,7 @@
 <?php
 /*-------------------------------------------------------+
 | PHP-Fusion Content Management System
-| Copyright (C) 2002 - 2013 Nick Jones
+| Copyright (C) 2002 - 2011 Nick Jones
 | http://www.php-fusion.co.uk/
 +--------------------------------------------------------+
 | Filename: Rewrite.class.php
@@ -199,7 +199,12 @@ class Rewrite
 		*/
 		global $settings;
 		$this->requesturi = $_SERVER['REQUEST_URI'];
-		$this->requesturi = str_replace($settings['site_path'], "", $this->requesturi);
+		if (isset($settings['site_path']) && strcmp($settings['site_path'],"/") != 0) {
+			$this->requesturi = str_replace($settings['site_path'], "", $this->requesturi);
+		}
+		else {
+			$this->requesturi = ltrim($this->requesturi,"/");
+		}
 		$this->requesturi = $this->cleanString($this->requesturi);
 		$this->requesturi = $this->cleanURL($this->requesturi);
 	}
