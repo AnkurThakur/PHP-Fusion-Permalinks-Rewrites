@@ -15,7 +15,7 @@
 | copyright header is strictly prohibited without
 | written permission from the original author(s).
 +--------------------------------------------------------*/
-require_once "maincore.php";
+require_once dirname(__FILE__)."/maincore.php";
 require_once THEMES."templates/header.php";
 require_once CLASSES."UserFields.class.php";
 require_once CLASSES."UserFieldsInput.class.php";

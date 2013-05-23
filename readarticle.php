@@ -15,7 +15,7 @@
 | copyright header is strictly prohibited without
 | written permission from the original author(s).
 +--------------------------------------------------------*/
-require_once "maincore.php";
+require_once dirname(__FILE__)."/maincore.php";
 
 if (isset($_GET['article_id']) && isnum($_GET['article_id'])) {
 	redirect("articles.php?article_id=".$_GET['article_id']);
